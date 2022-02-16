@@ -1,18 +1,18 @@
 import string
 
 def main():
-	K = 10
-	N = 4
-	K_string = input(f'Enter K (the number of top N-grams to be printed) or nothing for the default value of {K}: ')
+	k = 10
+	n = 4
+	K_string = input(f'Enter K (the number of top N-grams to be printed) or nothing for the default value of {k}: ')
 	if K_string.isnumeric():
-		K = int(K_string)
+		k = int(K_string)
 	else:
-		print(f'The string for K is not numeric. Using the default value of {K}.')
-	N_string = input(f'Enter N or nothing for the default value of {N}: ')
+		print(f'The string for K is not numeric. Using the default value of {k}.')
+	N_string = input(f'Enter N or nothing for the default value of {n}: ')
 	if N_string.isnumeric():
-		N = int(N_string)
+		n = int(N_string)
 	else:
-		print(f'The string for N is not numeric. Using the default value of {N}.')
+		print(f'The string for N is not numeric. Using the default value of {n}.')
 
 	text = input('Enter the text:\n')
 
@@ -46,9 +46,9 @@ def main():
 			sentence_word_counts.append(curr_sentence_word_count + 1)
 			curr_sentence_word_count = 0
 		
-		if clean_word_length >= N:
-			for i in range(clean_word_length - N + 1):
-				word_slice = clean_word[i:i+N]
+		if clean_word_length >= n:
+			for i in range(clean_word_length - n + 1):
+				word_slice = clean_word[i:i+n]
 				if word_slice not in n_grams:
 					n_grams[word_slice] = 1
 				else:
@@ -76,8 +76,8 @@ def main():
 
 	n_grams_items = list(n_grams.items())
 	n_grams_items.sort(key=lambda item: item[1], reverse=True)
-	print(f'\nTop {K} most frequent {N}-grams:')
-	for item in n_grams_items[:K]:
+	print(f'\nTop {k} most frequent {n}-grams:')
+	for item in n_grams_items[:k]:
 		print(item[0], item[1], sep='\t')
 
 if __name__ == '__main__':
