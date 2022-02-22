@@ -1,3 +1,21 @@
+"""
+Simple python script.
+
+This script can calculate the following parameters for an arbitrary text:
+- how many times does each word repeat in the text;
+- average amount of words in a sentence;
+- median amount of words in a sentence;
+- top-K most frequent N-grams with default values of K = 10 and N = 4.
+
+If imported as a module, the following functions can be used:
+- get_input - returns values entered by the user: N, K, text
+- get_words_in_sentences - splits the text into words grouped by sentences
+- get_word_frequencies - returns all words' frequencies
+- get_average_words_in_sentence - returns average amount of words in a sentence
+- get_median_words_in_sentence - returns median amount of words in a sentence
+- get_all_ngrams - returns all the n-grams
+- main - the main function
+"""
 import string
 
 K_DEFAULT = 10
