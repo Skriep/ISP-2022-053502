@@ -18,6 +18,10 @@ def get_input() -> 'tuple[int, int, str]':
 		n = N_DEFAULT
 		print(f'The string for N is not numeric. Using the default value of {n}.')
 
+	if n <= 0:
+		n = N_DEFAULT
+		print(f'N can only be greater than 0. Using the default value of {n}.')
+
 	text = input('Enter the text:\n')
 	return (k, n, text)
 
@@ -91,23 +95,24 @@ def main():
 		for word in word_frequencies:
 			freq = word_frequencies[word]
 			print(f'{word:<{biggest_word_length}s}\t{freq}')
-	print()
 
+	print()
 	median_words_in_sentence = get_median_words_in_sentence(sentences)
 	average_words_in_sentence = get_average_words_in_sentence(sentences)
 	print(f'Average amount of words in a sentence:\t{average_words_in_sentence:.3f}')
 	print(f'Median amount of words in a sentence:\t{median_words_in_sentence:.1f}')
-	print()
 
-	n_grams = get_all_ngrams(sentences, n)
-	n_grams_items = list(n_grams.items())
-	n_grams_items.sort(key=lambda item: item[1], reverse=True)
-	if len(n_grams_items) == 0:
-		print(f'No {n}-grams found.')
-	else:
-		print(f'Top {k} most frequent {n}-grams:')
-		for item in n_grams_items[:k]:
-			print(item[0], item[1], sep='\t')
+	if k > 0:
+		print()
+		n_grams = get_all_ngrams(sentences, n)
+		n_grams_items = list(n_grams.items())
+		n_grams_items.sort(key=lambda item: item[1], reverse=True)
+		if len(n_grams_items) == 0:
+			print(f'No {n}-grams found.')
+		else:
+			print(f'Top {k} most frequent {n}-grams:')
+			for item in n_grams_items[:k]:
+				print(item[0], item[1], sep='\t')
 
 if __name__ == '__main__':
 	main()
