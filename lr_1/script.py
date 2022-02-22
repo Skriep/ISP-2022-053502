@@ -3,20 +3,25 @@ import string
 K_DEFAULT = 10
 N_DEFAULT = 4
 
+
 def get_input() -> 'tuple[int, int, str]':
-    k_string = input(f'Enter K (the number of top N-grams to be printed) or nothing for the default value of {K_DEFAULT}: ')
+    k_string = input('Enter K (the number of top N-grams to be printed) '
+                     f'or nothing for the default value of {K_DEFAULT}: ')
     if k_string.isnumeric():
         k = int(k_string)
     else:
         k = K_DEFAULT
-        print(f'The string for K is not numeric. Using the default value of {k}.')
-    
-    n_string = input(f'Enter N or nothing for the default value of {N_DEFAULT}: ')
+        print('The string for K is not numeric. '
+              f'Using the default value of {k}.')
+
+    n_string = input(
+        f'Enter N or nothing for the default value of {N_DEFAULT}: ')
     if n_string.isnumeric():
         n = int(n_string)
     else:
         n = N_DEFAULT
-        print(f'The string for N is not numeric. Using the default value of {n}.')
+        print('The string for N is not numeric. '
+              f'Using the default value of {n}.')
 
     if n <= 0:
         n = N_DEFAULT
@@ -25,18 +30,23 @@ def get_input() -> 'tuple[int, int, str]':
     text = input('Enter the text:\n')
     return (k, n, text)
 
-def get_words_in_sentences(text : str) -> 'list[list[str]]':
+
+def get_words_in_sentences(text: str) -> 'list[list[str]]':
     '''
     Return lists of words grouped into sentences.
 
-    If the text is an empty string, return a list containing an empty list: [[]];
-    Otherwise, return a list in the following form: [['word', 'word'], ['word'], ...].
-    
-    If any word ends in '.', '!' or '?', it is considered the end of a sentence.
-    All trailing punctuation (as defined in string.punctuation) in words is stripped.
+    If the text is an empty string, return a list containing an empty list: \
+[[]];
+    Otherwise, return a list in the following form: \
+[['word', 'word'], ['word'], ...].
+
+    If any word ends in '.', '!' or '?', \
+it is considered the end of a sentence.
+    All trailing punctuation (as defined in string.punctuation) \
+in words is stripped.
     Leading characters '"', "'", '(', '{', '[' in words are also stripped.
     '''
-    sentences : list[list[str]] = [[]]
+    sentences: list[list[str]] = [[]]
     for word in text.split():
         clean_word = word.lower()
         clean_word = clean_word.rstrip(string.punctuation)
@@ -49,7 +59,8 @@ def get_words_in_sentences(text : str) -> 'list[list[str]]':
         del sentences[-1]
     return sentences
 
-def get_word_frequencies(sentences : 'list[list[str]]') -> 'dict[str, int]':
+
+def get_word_frequencies(sentences: 'list[list[str]]') -> 'dict[str, int]':
     word_frequencies = {}
     for sentence in sentences:
         for word in sentence:
@@ -59,27 +70,33 @@ def get_word_frequencies(sentences : 'list[list[str]]') -> 'dict[str, int]':
                 word_frequencies[word] += 1
     return word_frequencies
 
-def get_average_words_in_sentence(sentences : 'list[list[str]]') -> float:
+
+def get_average_words_in_sentence(sentences: 'list[list[str]]') -> float:
     sentence_word_counts = {len(sentence) for sentence in sentences}
     if len(sentence_word_counts) == 0:
         return 0
     else:
         return sum(sentence_word_counts) / len(sentence_word_counts)
 
-def get_median_words_in_sentence(sentences : 'list[list[str]]') -> float:
+
+def get_median_words_in_sentence(sentences: 'list[list[str]]') -> float:
     sentence_word_counts = sorted([len(sentence) for sentence in sentences])
-    sentence_word_counts_len = len(sentence_word_counts)
-    if sentence_word_counts_len == 0:
+    word_counts_len = len(sentence_word_counts)
+    if word_counts_len == 0:
         return 0
-    elif sentence_word_counts_len % 2 == 1:
-        median_words_in_sentence = float(sentence_word_counts[sentence_word_counts_len // 2])
+    elif word_counts_len % 2 == 1:
+        median_words_in_sentence = float(
+            sentence_word_counts[word_counts_len // 2])
     else:
-        median_words_in_sentence = (sentence_word_counts[sentence_word_counts_len // 2] +
-                                    sentence_word_counts[sentence_word_counts_len // 2 - 1]) / 2
+        median_words_in_sentence = (
+            sentence_word_counts[word_counts_len // 2]
+            + sentence_word_counts[word_counts_len // 2 - 1]
+        ) / 2
     return median_words_in_sentence
 
-def get_all_ngrams(sentences : 'list[list[str]]', n) -> 'dict[str, int]':
-    n_grams : dict[str, int] = {}
+
+def get_all_ngrams(sentences: 'list[list[str]]', n) -> 'dict[str, int]':
+    n_grams: dict[str, int] = {}
     for sentence in sentences:
         for word in sentence:
             word_len = len(word)
@@ -92,15 +109,17 @@ def get_all_ngrams(sentences : 'list[list[str]]', n) -> 'dict[str, int]':
                         n_grams[word_slice] += 1
     return n_grams
 
+
 def main():
     k, n, text = get_input()
     sentences = get_words_in_sentences(text)
-    
+
     word_frequencies = get_word_frequencies(sentences)
     if len(word_frequencies) == 0:
         print('\nThe text contains no words.')
     else:
-        biggest_word_length = max({len(word) for word in word_frequencies.keys()}, default=0)
+        biggest_word_length = max(
+            {len(word) for word in word_frequencies.keys()}, default=0)
         print('\nFrequencies of words in text:')
         for word in word_frequencies:
             freq = word_frequencies[word]
@@ -109,8 +128,10 @@ def main():
     print()
     median_words_in_sentence = get_median_words_in_sentence(sentences)
     average_words_in_sentence = get_average_words_in_sentence(sentences)
-    print(f'Average amount of words in a sentence:\t{average_words_in_sentence:.3f}')
-    print(f'Median amount of words in a sentence:\t{median_words_in_sentence:.1f}')
+    print('Average amount of words in a sentence:\t'
+          f'{average_words_in_sentence:.3f}')
+    print('Median amount of words in a sentence:\t'
+          f'{median_words_in_sentence:.1f}')
 
     if k > 0:
         print()
@@ -123,6 +144,7 @@ def main():
             print(f'Top {k} most frequent {n}-grams:')
             for item in n_grams_items[:k]:
                 print(item[0], item[1], sep='\t')
+
 
 if __name__ == '__main__':
     main()
