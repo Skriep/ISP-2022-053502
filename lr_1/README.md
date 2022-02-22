@@ -16,4 +16,6 @@
 
 ___
 
+### Docker image: https://hub.docker.com/r/skriep/simple-python-script
+
 ### Автор: Сачивко Никита Сергеевич, группа 053502.
