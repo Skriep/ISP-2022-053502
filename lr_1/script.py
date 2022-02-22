@@ -3,14 +3,14 @@ import string
 def main():
 	k = 10
 	n = 4
-	K_string = input(f'Enter K (the number of top N-grams to be printed) or nothing for the default value of {k}: ')
-	if K_string.isnumeric():
-		k = int(K_string)
+	k_string = input(f'Enter K (the number of top N-grams to be printed) or nothing for the default value of {k}: ')
+	if k_string.isnumeric():
+		k = int(k_string)
 	else:
 		print(f'The string for K is not numeric. Using the default value of {k}.')
-	N_string = input(f'Enter N or nothing for the default value of {n}: ')
-	if N_string.isnumeric():
-		n = int(N_string)
+	n_string = input(f'Enter N or nothing for the default value of {n}: ')
+	if n_string.isnumeric():
+		n = int(n_string)
 	else:
 		print(f'The string for N is not numeric. Using the default value of {n}.')
 
