@@ -32,20 +32,20 @@ def get_input() -> 'tuple[int, int, str]':
 
 
 def get_words_in_sentences(text: str) -> 'list[list[str]]':
-    '''
+    """
     Return lists of words grouped into sentences.
 
     If the text is an empty string, return a list containing an empty list: \
-[[]];
+    [[]];
     Otherwise, return a list in the following form: \
-[['word', 'word'], ['word'], ...].
+    [['word', 'word'], ['word'], ...].
 
     If any word ends in '.', '!' or '?', \
-it is considered the end of a sentence.
+    it is considered the end of a sentence.
     All trailing punctuation (as defined in string.punctuation) \
-in words is stripped.
+    in words is stripped.
     Leading characters '"', "'", '(', '{', '[' in words are also stripped.
-    '''
+    """
     sentences: list[list[str]] = [[]]
     for word in text.split():
         clean_word = word.lower()
