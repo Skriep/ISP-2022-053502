@@ -27,8 +27,9 @@ def main():
     print('\n')
     usr_utils.print_average_words_in_sentence()
     usr_utils.print_median_words_in_sentence()
-    print('\n')
-    usr_utils.print_top_ngrams()
+    if usr_utils.k > 0:
+        print('\n')
+        usr_utils.print_top_ngrams()
 
 
 if __name__ == '__main__':

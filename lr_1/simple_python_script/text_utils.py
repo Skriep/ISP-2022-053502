@@ -26,6 +26,8 @@ class TextUtils:
     - get_all_ngrams - returns all the n-grams;
     """
 
+    _text = ''
+
     def __init__(self, text):
         """Initialize the class with the text."""
         self.set_text(text)
@@ -46,7 +48,7 @@ class TextUtils:
         Leading characters '"', "'", '(', '{', '[' in words are also stripped.
         """
         sentences: list[list[str]] = [[]]
-        for word in self.text.split():
+        for word in self._text.split():
             clean_word = word.lower()
             clean_word = clean_word.rstrip(string.punctuation)
             clean_word = clean_word.lstrip("\"'({[")
@@ -60,7 +62,7 @@ class TextUtils:
 
     def set_text(self, text):
         """Replace text with the provided one."""
-        self.text = text
+        self._text = text
         self.sentences = self._get_words_in_sentences()
 
     def get_word_frequencies(self) -> 'dict[str, int]':

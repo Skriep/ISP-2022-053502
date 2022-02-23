@@ -10,8 +10,6 @@ provided by the user:
 
 If imported as a module, the class UIUtils is available.
 """
-
-
 from text_utils import TextUtils
 
 
@@ -27,6 +25,14 @@ class UIUtils:
     of words in a sentence;
     - print_top_ngrams - print top k n-grams;
     """
+
+    _text = ''
+    _text_utils: TextUtils = None
+
+    k_default = 10
+    n_default = 4
+    k = k_default
+    n = n_default
 
     def __init__(self, k_default=10, n_default=4):
         """
@@ -44,11 +50,11 @@ class UIUtils:
         self.k_default = k_default
         self.n_default = n_default
         self._get_user_input()
-        self.text_utils = TextUtils(self.text)
+        self._text_utils = TextUtils(self._text)
 
     def _get_user_input(self):
         """
-        Initialize values self.k, self.n and self.text.
+        Initialize values self.k, self.n and self._text.
 
         Ask the user to enter values of K, N, text.
         K must be a non-negative integer.
@@ -82,11 +88,11 @@ class UIUtils:
             print('N can only be greater than 0. '
                   f'Using the default value of {self.n}.')
 
-        self.text = input('Enter the text:\n')
+        self._text = input('Enter the text:\n')
 
     def print_word_frequencies(self):
         """Print all words' frequencies."""
-        word_frequencies = self.text_utils.get_word_frequencies()
+        word_frequencies = self._text_utils.get_word_frequencies()
         if len(word_frequencies) == 0:
             print('\nThe text contains no words.')
         else:
@@ -100,14 +106,14 @@ class UIUtils:
     def print_average_words_in_sentence(self):
         """Print average amount of words in a sentence."""
         average_words_in_sentence = (
-            self.text_utils.get_average_words_in_sentence())
+            self._text_utils.get_average_words_in_sentence())
         print('Average amount of words in a sentence:\t'
               f'{average_words_in_sentence:.3f}')
 
     def print_median_words_in_sentence(self):
         """Print median amount of words in a sentence."""
         median_words_in_sentence = (
-            self.text_utils.get_median_words_in_sentence())
+            self._text_utils.get_median_words_in_sentence())
         print('Median amount of words in a sentence:\t'
               f'{median_words_in_sentence:.1f}')
 
@@ -118,7 +124,7 @@ class UIUtils:
         K and N are values of the corresponding variables self.k and self.n.
         """
         if self.k > 0:
-            n_grams = self.text_utils.get_all_ngrams(self.n)
+            n_grams = self._text_utils.get_all_ngrams(self.n)
             n_grams_items = list(n_grams.items())
             n_grams_items.sort(key=lambda item: item[1], reverse=True)
             if len(n_grams_items) == 0:
