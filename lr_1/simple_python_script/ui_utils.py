@@ -113,7 +113,7 @@ class UIUtils:
 
     def print_top_ngrams(self):
         """
-        Print_top_ngrams - print top K N-grams.
+        Print top K N-grams.
 
         K and N are values of the corresponding variables self.k and self.n.
         """
