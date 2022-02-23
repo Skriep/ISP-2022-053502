@@ -10,6 +10,7 @@ This module can calculate the following parameters for an arbitrary text:
 If imported as a module, the class TextUtils is available.
 """
 import string
+import typing
 
 
 class TextUtils:
@@ -32,7 +33,7 @@ class TextUtils:
         """Initialize the class with the text."""
         self.set_text(text)
 
-    def _get_words_in_sentences(self) -> 'list[list[str]]':
+    def _get_words_in_sentences(self) -> typing.List[typing.List[str]]:
         """
         Return lists of words grouped into sentences.
 
@@ -65,7 +66,7 @@ class TextUtils:
         self._text = text
         self.sentences = self._get_words_in_sentences()
 
-    def get_word_frequencies(self) -> 'dict[str, int]':
+    def get_word_frequencies(self) -> typing.Dict[str, int]:
         """
         Return a dictionary of word frequencies of occurrence in the text.
 
@@ -126,7 +127,7 @@ class TextUtils:
             ) / 2
         return median_words_in_sentence
 
-    def get_all_ngrams(self, n) -> 'dict[str, int]':
+    def get_all_ngrams(self, n) -> typing.Dict[str, int]:
         """
         Return a dictionary with all n-grams and their frequencies in the text.
 
