@@ -6,10 +6,6 @@ This script can calculate the following parameters for an arbitrary text:
 - average amount of words in a sentence;
 - median amount of words in a sentence;
 - top-K most frequent N-grams with default values of K = 10 and N = 4.
-
-The following global variables are used:
-- K_DEFAULT - the default value for K (used in function get_input);
-- N_DEFAULT - the default value for N (used in function get_input).
 """
 from ui_utils import UIUtils
 
@@ -18,8 +14,7 @@ def main():
     """
     Print some information about the text entered by the user.
 
-    First, the function get_input() is called.
-    Then, the entered text is processed
+    Text entered by the user is processed
     and the following information is printed:
     - how many times does each word repeat in the text;
     - average amount of words in a sentence;
