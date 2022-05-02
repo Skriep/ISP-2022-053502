@@ -18,7 +18,7 @@ class Packer:
         elif obj_type == dict:
             data['type'] = 'dict'
             data['value'] = list(map(Packer.pack, obj.items()))
-        elif obj_type in (tuple, list):
+        elif obj_type in (tuple, list, set):
             data['type'] = obj_type_str
             data['value'] = list(map(Packer.pack, obj))
         elif inspect.isroutine(obj):
@@ -39,7 +39,7 @@ class Packer:
         elif obj_type in ('str', 'int', 'float', 'complex', 'bool'):
             callable = cast(Callable, locate(obj_type))
             return callable(data['value'])
-        elif obj_type in ('tuple', 'list', 'dict'):
+        elif obj_type in ('tuple', 'list', 'dict', 'set'):
             callable = cast(Callable, locate(obj_type))
             return callable(map(Packer.unpack,
                                 cast(List[Dict], data['value'])))
