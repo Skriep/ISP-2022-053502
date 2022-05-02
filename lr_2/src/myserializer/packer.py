@@ -12,14 +12,14 @@ class Packer:
         obj_type_str = re.findall("'(.+?)'", str(obj_type))[0]
         if obj is None:
             data['type'] = 'None'
-        elif obj_type in (str, int, float, complex):
+        elif obj_type in (str, int, float, complex, bool):
             data['type'] = obj_type_str
             data['value'] = str(obj)
         elif obj_type == dict:
             data['type'] = 'dict'
             data['value'] = list(map(Packer.pack, obj.items()))
         elif obj_type in (tuple, list):
-            data['type'] = 'tuple'
+            data['type'] = obj_type_str
             data['value'] = list(map(Packer.pack, obj))
         elif inspect.isroutine(obj):
             # TODO
@@ -34,7 +34,9 @@ class Packer:
         obj_type = str(data['type'])
         if obj_type == 'None':
             return None
-        elif obj_type in ('str', 'int', 'float', 'complex'):
+        elif obj_type == 'bool':
+            return True if data['value'] == 'True' else False
+        elif obj_type in ('str', 'int', 'float', 'complex', 'bool'):
             callable = cast(Callable, locate(obj_type))
             return callable(data['value'])
         elif obj_type in ('tuple', 'list', 'dict'):
