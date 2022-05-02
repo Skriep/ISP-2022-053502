@@ -1,17 +1,21 @@
 from typing import TextIO
+from myserializer.packer import Packer
+import toml
 
 
 def dump(obj, fp: TextIO):
-    pass
+    packed = Packer.pack(obj)
+    toml.dump(packed, fp)
 
 
 def dumps(obj) -> str:
-    pass
+    packed = Packer.pack(obj)
+    return toml.dumps(packed)
 
 
 def load(fp: TextIO):
-    pass
+    return Packer.unpack(toml.load(fp))
 
 
 def loads(s: str):
-    pass
+    return Packer.unpack(toml.loads(s))
