@@ -1,13 +1,13 @@
 import inspect
 from pydoc import locate
-from typing import Dict, List
+from typing import Callable, Dict, List, cast
 import re
 
 
 class Packer:
     @staticmethod
-    def pack(obj) -> 'Dict[str, str | List[str]]':
-        data = {}
+    def pack(obj) -> 'Dict[str, str | List[Dict]]':
+        data: 'Dict[str, str | List[Dict]]' = {}
         obj_type = type(obj)
         obj_type_str = re.findall("'(.+?)'", str(obj_type))[0]
         if obj is None:
@@ -30,14 +30,17 @@ class Packer:
         return data
 
     @staticmethod
-    def unpack(data: 'Dict[str, str | List[str]]'):
-        obj_type = data['type']
+    def unpack(data: 'Dict[str, str | List[Dict]]'):
+        obj_type = str(data['type'])
         if obj_type == 'None':
             return None
         elif obj_type in ('str', 'int', 'float', 'complex'):
-            return locate(obj_type)(data['value'])
+            callable = cast(Callable, locate(obj_type))
+            return callable(data['value'])
         elif obj_type in ('tuple', 'list', 'dict'):
-            return locate(obj_type)(map(Packer.unpack, data['value']))
+            callable = cast(Callable, locate(obj_type))
+            return callable(map(Packer.unpack,
+                                cast(List[Dict], data['value'])))
         else:
             raise NotImplementedError(f'The object of type "{obj_type}" '
                                       'cannot be unpacked')

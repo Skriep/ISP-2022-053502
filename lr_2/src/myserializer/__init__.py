@@ -1,6 +1,6 @@
-from serialization import my_toml
-from serialization import my_yaml
-from serialization import my_json
+from myserializer import my_toml
+from myserializer import my_yaml
+from myserializer import my_json
 
 
 def create_serializer(serializer_type: str):
