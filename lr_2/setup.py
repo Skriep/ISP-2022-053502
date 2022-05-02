@@ -7,7 +7,8 @@ if __name__ == '__main__':
           description='JSON, YAML & TOML serializer',
           author='Skriep',
           packages=find_packages(
+              where='src',
               include=['myserializer', 'myserializer.*']),
           package_dir={'': 'src'},
-          python_requires='>3.8.0'
+          python_requires='>=3.8.0'
           )
