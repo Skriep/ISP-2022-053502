@@ -1,17 +1,21 @@
 from typing import TextIO
+from myserializer.packer import Packer
+import yaml
 
 
 def dump(obj, fp: TextIO):
-    pass
+    packed = Packer.pack(obj)
+    yaml.safe_dump(packed, fp)
 
 
 def dumps(obj) -> str:
-    pass
+    packed = Packer.pack(obj)
+    return yaml.safe_dump(packed)
 
 
 def load(fp: TextIO):
-    pass
+    return Packer.unpack(yaml.safe_load(fp))
 
 
 def loads(s: str):
-    pass
+    return Packer.unpack(yaml.safe_load(s))
