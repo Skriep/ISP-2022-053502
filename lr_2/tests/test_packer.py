@@ -16,6 +16,7 @@ def pack_unpack(item):
      (1, 2, 3): (4, 5, 6)},
     {'deep': {'deep': {'deep': {'deep': {'deep': {'deep': {'deep': 1}}}}}}},
     {1, 2, 3, 'this is SET', True, 13.4},
+    frozenset({1, 2, '3', False, 3.14}),
     range(100), range(0, 1, 2), range(25, -10, -1)
 ])
 def test_packing(test_input):
