@@ -17,7 +17,9 @@ def pack_unpack(item):
     {'deep': {'deep': {'deep': {'deep': {'deep': {'deep': {'deep': 1}}}}}}},
     {1, 2, 3, 'this is SET', True, 13.4},
     frozenset({1, 2, '3', False, 3.14}),
-    range(100), range(0, 1, 2), range(25, -10, -1)
+    range(100), range(0, 1, 2), range(25, -10, -1),
+    b'\x00\x01\x02 abc 123 \n\r -- \x93', b'123', b'bytes',
+    bytearray(b'123'), bytearray((1, 2, 5, 3, 2, 6, 235, 12, 123))
 ])
 def test_packing(test_input):
     assert pack_unpack(test_input) == test_input
