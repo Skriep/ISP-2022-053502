@@ -21,6 +21,10 @@ class Packer:
         elif obj_type in (tuple, list, set):
             data['type'] = obj_type_str
             data['value'] = list(map(Packer.pack, obj))
+        elif obj_type == range:
+            data['type'] = 'range'
+            data['value'] = list(map(Packer.pack,
+                                     (obj.start, obj.stop, obj.step)))
         elif inspect.isroutine(obj):
             # TODO
             pass
@@ -43,6 +47,10 @@ class Packer:
             callable = cast(Callable, locate(obj_type))
             return callable(map(Packer.unpack,
                                 cast(List[Dict], data['value'])))
+        elif obj_type == 'range':
+            start, stop, step = map(Packer.unpack,
+                                    cast(List[Dict], data['value']))
+            return range(start, stop, step)
         else:
             raise NotImplementedError(f'The object of type "{obj_type}" '
                                       'cannot be unpacked')
