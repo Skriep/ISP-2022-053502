@@ -44,6 +44,8 @@ class JsonDecoder:
             if len(item_separator) != 1 or len(key_separator) != 1:
                 raise ValueError('Separators must consist of '
                                  '1 non-whitespace char')
+            self.item_separator = item_separator
+            self.key_separator = key_separator
 
     def decode(self, s: 'str | TextIO'
                ) -> 'str | Dict[str, str | List[Dict]] | List[Dict]':
