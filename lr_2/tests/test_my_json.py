@@ -39,6 +39,9 @@ def test_encoding_separators(test_input, test_separators):
     assert encode_decode(test_input, encoder, decoder) == test_input
 
 
-def test_invalid_separators():
+@pytest.mark.parametrize('test_separators', [
+    ('ae fae ', ''), (' ', '    '), ('\r\n', '')
+])
+def test_invalid_separators(test_separators):
     with pytest.raises(ValueError):
-        JsonDecoder(separators=('ae fae ', ''))
+        JsonDecoder(separators=test_separators)
