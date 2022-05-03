@@ -46,7 +46,7 @@ class JsonEncoder:
     def _encode_str(self, obj: str):
         return f'"{str_json_escape(obj)}"'
 
-    def _encode_list(self, obj: 'List[Dict]') -> str:
+    def _encode_list(self, obj: List[Dict]) -> str:
         buf = '['
         first_val = True
         for val in obj:
@@ -57,7 +57,7 @@ class JsonEncoder:
             buf += self.encode(val)
         return buf + ']'
 
-    def _encode_dict(self, obj: 'Dict[str, str | List[Dict]]') -> str:
+    def _encode_dict(self, obj: Dict[str, 'str | List[Dict]']) -> str:
         buf = '{'
         first_pair = True
         for k, v in obj.items():

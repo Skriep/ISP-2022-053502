@@ -1,5 +1,6 @@
-from typing import TextIO
+from typing import TextIO, cast
 from myserializer.my_json.encoder import JsonEncoder
+from myserializer.my_json.decoder import JsonDecoder
 from myserializer.packer import Packer
 import io
 
@@ -17,8 +18,12 @@ def dumps(obj) -> str:
 
 
 def load(fp: TextIO):
-    # TODO
-    pass
+    decoder = JsonDecoder()
+    decoded = decoder.decode(fp)
+    if decoded is not dict:
+        raise ValueError('Decoded value cannot be unpacked')
+    decoded = cast(dict, decoded)
+    return Packer.unpack(decoded)
 
 
 def loads(s: str):
