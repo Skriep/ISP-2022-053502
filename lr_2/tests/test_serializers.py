@@ -29,3 +29,12 @@ def test_serialization(test_input, serializer):
 @pytest.mark.parametrize('serializer', serializers)
 def test_serialization_to_file(test_input, serializer):
     assert dump_load(test_input, serializer) == test_input
+
+
+@pytest.mark.parametrize('test_input', [
+    '"just a string"', '["array", 1, 2]', '{"f" : "f"}'
+])
+@pytest.mark.parametrize('serializer', serializers)
+def test_not_unpackable(test_input, serializer):
+    with pytest.raises(Exception):
+        serializer.loads(test_input)
