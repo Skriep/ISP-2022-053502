@@ -13,6 +13,10 @@ def dumps_decode(obj, decoder: JsonDecoder):
     return decoder.decode(json.dumps(obj))
 
 
+def encode_decode(obj, encoder: JsonEncoder, decoder: JsonDecoder):
+    return decoder.decode(encoder.encode(obj))
+
+
 @pytest.mark.parametrize('test_input', test_inputs)
 def test_encoding(test_input):
     encoder = JsonEncoder()
@@ -23,3 +27,18 @@ def test_encoding(test_input):
 def test_decoding(test_input):
     decoder = JsonDecoder()
     assert dumps_decode(test_input, decoder) == test_input
+
+
+@pytest.mark.parametrize('test_input', test_inputs)
+@pytest.mark.parametrize('test_separators', [
+    ('.', '+'), ('/', ')'), ('m', 'b')
+])
+def test_encoding_separators(test_input, test_separators):
+    encoder = JsonEncoder(separators=test_separators)
+    decoder = JsonDecoder(separators=test_separators)
+    assert encode_decode(test_input, encoder, decoder) == test_input
+
+
+def test_invalid_separators():
+    with pytest.raises(ValueError):
+        JsonDecoder(separators=('ae fae ', ''))
