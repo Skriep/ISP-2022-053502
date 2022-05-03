@@ -20,7 +20,7 @@ def dumps(obj) -> str:
 def load(fp: TextIO):
     decoder = JsonDecoder()
     decoded = decoder.decode(fp)
-    if decoded is not dict:
+    if type(decoded) is not dict:
         raise ValueError('Decoded value cannot be unpacked')
     decoded = cast(dict, decoded)
     return Packer.unpack(decoded)
