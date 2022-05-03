@@ -1,15 +1,16 @@
-from myserializer import my_toml
-from myserializer import my_yaml
-from myserializer import my_json
+from myserializer.my_json import JsonSerializer
+from myserializer.my_yaml import YamlSerializer
+from myserializer.my_toml import TomlSerializer
+from myserializer.serializer import Serializer
 
 
-def create_serializer(serializer_type: str):
+def create_serializer(serializer_type: str) -> Serializer:
     serializer_type = serializer_type.lower()
     if serializer_type == 'json':
-        return my_json
+        return JsonSerializer()
     elif serializer_type == 'yaml':
-        return my_yaml
+        return YamlSerializer()
     elif serializer_type == 'toml':
-        return my_toml
+        return TomlSerializer()
     else:
         raise NotImplementedError('Unknown serializer type')

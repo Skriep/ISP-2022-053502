@@ -1,4 +1,5 @@
 from myserializer import create_serializer
+from myserializer.serializer import Serializer
 from serialization_options import implemented_types as implemented
 from serialization_options import not_implemented_types as not_implemented
 import pytest
@@ -24,7 +25,7 @@ def randomize_uppercase(lst: List[str]):
 @pytest.mark.parametrize('serializer_type',
                          implemented + randomize_uppercase(implemented))
 def test_implemented(serializer_type):
-    assert create_serializer(serializer_type) is not None
+    assert create_serializer(serializer_type) is Serializer
 
 
 @pytest.mark.parametrize(
