@@ -1,10 +1,13 @@
 from abc import ABC, abstractmethod
-from typing import TextIO
+from typing import Any, Dict, TextIO
 
 
 class Serializer(ABC):
+    def __init__(self, globals: Dict[str, Any] = None) -> None:
+        self.globals = globals
+
     @abstractmethod
-    def dump(self, obj, fp: TextIO):
+    def dump(self, obj, fp: TextIO) -> None:
         pass
 
     @abstractmethod
@@ -12,9 +15,9 @@ class Serializer(ABC):
         pass
 
     @abstractmethod
-    def load(self, fp: TextIO):
+    def load(self, fp: TextIO) -> Any:
         pass
 
     @abstractmethod
-    def loads(self, s: str):
+    def loads(self, s: str) -> Any:
         pass

@@ -47,8 +47,7 @@ class JsonDecoder:
             self.item_separator = item_separator
             self.key_separator = key_separator
 
-    def decode(self, s: 'str | TextIO'
-               ) -> 'str | Dict[str, str | List[Dict]] | List[Dict]':
+    def decode(self, s: 'str | TextIO') -> 'str | Dict | List':
         if type(s) is str:
             with StringIO(cast(str, s)) as _stream:
                 return self.decode(_stream)

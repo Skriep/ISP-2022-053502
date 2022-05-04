@@ -1,11 +1,12 @@
 from typing import TextIO
 from myserializer.packer import Packer
 from myserializer.serializer import Serializer
+from typing import Any
 import yaml
 
 
 class YamlSerializer(Serializer):
-    def dump(self, obj, fp: TextIO):
+    def dump(self, obj, fp: TextIO) -> None:
         packed = Packer.pack(obj)
         yaml.safe_dump(packed, fp)
 
@@ -13,8 +14,8 @@ class YamlSerializer(Serializer):
         packed = Packer.pack(obj)
         return yaml.safe_dump(packed)
 
-    def load(self, fp: TextIO):
-        return Packer.unpack(yaml.safe_load(fp))
+    def load(self, fp: TextIO) -> Any:
+        return Packer.unpack(yaml.safe_load(fp), self.globals)
 
-    def loads(self, s: str):
-        return Packer.unpack(yaml.safe_load(s))
+    def loads(self, s: str) -> Any:
+        return Packer.unpack(yaml.safe_load(s), self.globals)
