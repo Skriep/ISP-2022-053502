@@ -1,3 +1,7 @@
+"""Setup.
+
+This module can be used to setup myserializer.
+"""
 from setuptools import find_packages, setup
 
 
