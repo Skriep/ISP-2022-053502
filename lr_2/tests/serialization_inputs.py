@@ -76,10 +76,10 @@ def _get_test_funcs() -> list:
         def _b(arg, default=3):
             '''docstring'''
             a = 225
-            if a > 0:
+            if arg > 0:
                 return _a(arg * a * b + default)
             else:
-                return _a(arg * b, default - a)
+                return _a(a * b, default - arg)
         return _b
 
     import math

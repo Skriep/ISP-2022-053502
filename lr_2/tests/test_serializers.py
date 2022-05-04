@@ -22,21 +22,18 @@ def dump_load(item, serializer):
 
 @pytest.mark.parametrize('test_input', test_inputs)
 @pytest.mark.parametrize('serializer', serializers)
-def test_serialization(test_input, serializer):
-    assert dumps_loads(test_input, serializer) == test_input
-
-
-@pytest.mark.parametrize('test_input', test_inputs)
-@pytest.mark.parametrize('serializer', serializers)
-def test_serialization_to_file(test_input, serializer):
-    assert dump_load(test_input, serializer) == test_input
+@pytest.mark.parametrize('cycle_serialization', [dumps_loads, dump_load])
+def test_general_serialization(test_input, serializer, cycle_serialization):
+    test_output = cycle_serialization(test_input, serializer)
+    assert type(test_output) == type(test_input)
+    assert test_output == test_input
 
 
 @pytest.mark.parametrize('test_input', [
     '"just a string"', '["array", 1, 2]', '{"f" : "f"}'
 ])
 @pytest.mark.parametrize('serializer', serializers)
-def test_not_unpackable(test_input, serializer):
+def test_not_unpackable(test_input, serializer: Serializer):
     with pytest.raises(Exception):
         serializer.loads(test_input)
 
