@@ -13,6 +13,7 @@ Attributes:
 """
 from types import FunctionType
 from typing import List, Tuple
+import serialization_func_tests_dummy
 
 
 _int_tests: list = [
@@ -110,7 +111,8 @@ def _get_test_funcs() -> list:
         (_get_func_2(), [(x,) for x in [10, -45, 39, 13]]),
         (_get_func_3(), [(1,), (7,), (-64, 4), (10, 5), (25,)]),
         (_get_func_4(), [(12,), (4,), (-4, 5), (1, 56), (12,)]),
-        (_test_func_5, [(1, 3, 5), (-1, -3, 4), (4.2, 23.4, 2345.3)])
+        (_test_func_5, [(1, 3, 5), (-1, -3, 4), (4.2, 23.4, 2345.3)]),
+        (serialization_func_tests_dummy._t, [(x,) for x in [-1, 13, 27, 17.4]])
     ]
 
 
