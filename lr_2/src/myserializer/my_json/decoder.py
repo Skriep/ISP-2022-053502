@@ -69,54 +69,60 @@ class JsonDecoder:
             raise ValueError(f'Unexpected character "{first_char}"')
 
     def _decode_str(self, stream: TextIO) -> str:
-        buf = ''
-        while True:
-            ch = read_chars(stream, 1)
-            if ch == '"':
-                return buf
+        buf = ['']
+        while (ch := read_chars(stream, 1)) != '"':
             if ch == '\\':
                 next_ch = read_chars(stream, 1)
                 if next_ch == 'u':
                     unicode_hex = read_chars(stream, 4)
                     unicode_val = int(unicode_hex, 16)
-                    buf += chr(unicode_val)
+                    buf.append(chr(unicode_val))
                 else:
-                    buf += str_json_unescape(next_ch)
+                    buf.append(str_json_unescape(next_ch))
             else:
-                buf += ch
+                buf.append(ch)
+        return ''.join(buf)
 
     def _decode_list(self, stream: TextIO) -> List:
         result: list = []
-        while True:
-            ch = read_chars(stream, 1)
+        first_val = True
+        while (ch := read_chars(stream, 1)) != ']':
             if ch in WHITESPACE_CHARS:
                 continue
-            if ch == ']':
-                return result
-            elif ch == self.item_separator:
-                continue
+            if not first_val:
+                if ch != self.item_separator:
+                    raise ValueError(
+                        f'Unexpected character "{ch}". '
+                        f'Expected item separator: "{self.item_separator}"')
+                value = self.decode(stream)
             else:
-                result.append(self._decode(stream, ch))
+                value = self._decode(stream, ch)
+                first_val = False
+            result.append(value)
+        return result
 
     def _decode_dict(self, stream: TextIO) -> Dict:
         result: dict = {}
-        while True:
-            ch = read_chars(stream, 1)
+        first_pair = True
+        while (ch := read_chars(stream, 1)) != '}':
             if ch in WHITESPACE_CHARS:
                 continue
-            if ch == '}':
-                return result
-            elif ch == self.item_separator:
-                continue
+            if not first_pair:
+                if ch != self.item_separator:
+                    raise ValueError(
+                        f'Unexpected character "{ch}". '
+                        f'Expected item separator: "{self.item_separator}"')
+                key = self.decode(stream)
             else:
                 key = self._decode(stream, ch)
+                first_pair = False
+            next_char = read_chars(stream, 1)
+            while next_char in WHITESPACE_CHARS:
                 next_char = read_chars(stream, 1)
-                while next_char in WHITESPACE_CHARS:
-                    next_char = read_chars(stream, 1)
-                if next_char == self.key_separator:
-                    value = self.decode(stream)
-                    result.setdefault(key, value)
-                else:
-                    raise ValueError(
-                        f'Unexpected character "{next_char}". '
-                        f'Expected key separator: "{self.key_separator}"')
+            if next_char != self.key_separator:
+                raise ValueError(
+                    f'Unexpected character "{next_char}". '
+                    f'Expected key separator: "{self.key_separator}"')
+            value = self.decode(stream)
+            result.setdefault(key, value)
+        return result
