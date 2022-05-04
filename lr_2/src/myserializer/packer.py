@@ -5,6 +5,7 @@ from types import CellType, FunctionType
 from typing import Any, Callable, Dict, List, cast
 import re
 import builtins
+from base64 import b64encode, b64decode
 
 
 def _make_cell(contents):
@@ -32,9 +33,12 @@ class Packer:
         elif obj_type == dict:
             data['type'] = 'dict'
             data['value'] = list(map(self.pack, obj.items()))
-        elif obj_type in (tuple, list, set, frozenset, bytes, bytearray):
+        elif obj_type in (tuple, list, set, frozenset):
             data['type'] = obj_type_str
             data['value'] = list(map(self.pack, obj))
+        elif obj_type in (bytes, bytearray):
+            data['type'] = obj_type_str
+            data['value'] = self.pack(b64encode(obj).decode())
         elif obj_type == range:
             data['type'] = 'range'
             obj = cast(range, obj)
@@ -59,7 +63,7 @@ class Packer:
                                       'cannot be packed')
         return data
 
-    def unpack(self, data: 'Dict[str, str | List[Dict] | Dict]'):
+    def unpack(self, data: 'Dict[str, str | List[Dict] | Dict]') -> Any:
         obj_type = str(data['type'])
         if obj_type == 'None':
             return None
@@ -68,11 +72,15 @@ class Packer:
         elif obj_type in ('str', 'int', 'float', 'complex', 'bool'):
             callable = cast(Callable, locate(obj_type))
             return callable(data['value'])
-        elif obj_type in ('tuple', 'list', 'dict', 'set', 'frozenset',
-                          'bytes', 'bytearray'):
+        elif obj_type in ('tuple', 'list', 'dict', 'set', 'frozenset'):
             callable = cast(Callable, locate(obj_type))
             return callable(map(self.unpack,
                                 cast(List[Dict], data['value'])))
+        elif obj_type in ('bytes', 'bytearray'):
+            result = b64decode(self.unpack(cast(Dict, data['value'])))
+            if obj_type == 'bytearray':
+                return bytearray(result)
+            return result
         elif obj_type == 'range':
             start = self.unpack(cast(Dict, data['start']))
             stop = self.unpack(cast(Dict, data['stop']))
