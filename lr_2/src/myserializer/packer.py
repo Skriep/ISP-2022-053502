@@ -17,8 +17,10 @@ def _make_cell(contents):
 
 
 class Packer:
-    @staticmethod
-    def pack(obj) -> 'Dict[str, str | List[Dict] | Dict]':
+    def __init__(self, globals: Dict[str, Any] = None) -> None:
+        self.globals = globals
+
+    def pack(self, obj) -> 'Dict[str, str | List[Dict] | Dict]':
         data: 'Dict[str, str | List[Dict] | Dict]' = {}
         obj_type = type(obj)
         obj_type_str = re.findall("'(.+?)'", str(obj_type))[0]
@@ -29,35 +31,35 @@ class Packer:
             data['value'] = str(obj)
         elif obj_type == dict:
             data['type'] = 'dict'
-            data['value'] = list(map(Packer.pack, obj.items()))
+            data['value'] = list(map(self.pack, obj.items()))
         elif obj_type in (tuple, list, set, frozenset, bytes, bytearray):
             data['type'] = obj_type_str
-            data['value'] = list(map(Packer.pack, obj))
+            data['value'] = list(map(self.pack, obj))
         elif obj_type == range:
             data['type'] = 'range'
             obj = cast(range, obj)
-            data['start'] = Packer.pack(obj.start)
-            data['stop'] = Packer.pack(obj.stop)
-            data['step'] = Packer.pack(obj.step)
+            data['start'] = self.pack(obj.start)
+            data['stop'] = self.pack(obj.stop)
+            data['step'] = self.pack(obj.step)
         elif obj_type == CellType:
             data['type'] = 'cell'
-            data['value'] = Packer.pack(cast(CellType, obj).cell_contents)
+            data['value'] = self.pack(cast(CellType, obj).cell_contents)
+        elif inspect.ismodule(obj):
+            data['type'] = 'module'
+            data['name'] = self.pack(obj.__name__)
         elif inspect.isfunction(obj):
             data['type'] = 'function'
-            data['doc'] = Packer.pack(obj.__doc__)
-            data['name'] = Packer.pack(obj.__name__)
-            data['code'] = Packer.pack(marshal.dumps(obj.__code__))
-            data['defaults'] = Packer.pack(obj.__defaults__)
-            data['closure'] = Packer.pack(obj.__closure__)
+            data['doc'] = self.pack(obj.__doc__)
+            data['name'] = self.pack(obj.__name__)
+            data['code'] = self.pack(marshal.dumps(obj.__code__))
+            data['defaults'] = self.pack(obj.__defaults__)
+            data['closure'] = self.pack(obj.__closure__)
         else:
-            print(obj)
             raise NotImplementedError(f'The object of type "{obj_type}" '
                                       'cannot be packed')
         return data
 
-    @staticmethod
-    def unpack(data: 'Dict[str, str | List[Dict] | Dict]',
-               globals: Dict[str, Any] = None):
+    def unpack(self, data: 'Dict[str, str | List[Dict] | Dict]'):
         obj_type = str(data['type'])
         if obj_type == 'None':
             return None
@@ -69,25 +71,33 @@ class Packer:
         elif obj_type in ('tuple', 'list', 'dict', 'set', 'frozenset',
                           'bytes', 'bytearray'):
             callable = cast(Callable, locate(obj_type))
-            return callable(map(Packer.unpack,
+            return callable(map(self.unpack,
                                 cast(List[Dict], data['value'])))
         elif obj_type == 'range':
-            start = Packer.unpack(cast(Dict, data['start']))
-            stop = Packer.unpack(cast(Dict, data['stop']))
-            step = Packer.unpack(cast(Dict, data['step']))
+            start = self.unpack(cast(Dict, data['start']))
+            stop = self.unpack(cast(Dict, data['stop']))
+            step = self.unpack(cast(Dict, data['step']))
             return range(start, stop, step)
         elif obj_type == 'cell':
-            cell_contents = Packer.unpack(cast(Dict, data['value']))
+            cell_contents = self.unpack(cast(Dict, data['value']))
             return _make_cell(cell_contents)
+        elif obj_type == 'module':
+            name = self.unpack(cast(Dict, data['name']))
+            name = cast(str, name)
+            if self.globals and name in self.globals:
+                return self.globals[name]
+            else:
+                return __import__(name, self.globals)
         elif obj_type == 'function':
+            globals = self.globals
             if globals is None:
                 globals = builtins.globals()
-            doc = Packer.unpack(cast(Dict, data['doc']))
-            name = Packer.unpack(cast(Dict, data['name']))
-            code_marshalled = Packer.unpack(cast(Dict, data['code']))
+            doc = self.unpack(cast(Dict, data['doc']))
+            name = self.unpack(cast(Dict, data['name']))
+            code_marshalled = self.unpack(cast(Dict, data['code']))
             code = marshal.loads(code_marshalled)
-            defaults = Packer.unpack(cast(Dict, data['defaults']))
-            closure = Packer.unpack(cast(Dict, data['closure']))
+            defaults = self.unpack(cast(Dict, data['defaults']))
+            closure = self.unpack(cast(Dict, data['closure']))
             func = FunctionType(code, globals, name, defaults, closure)
             func.__doc__ = doc
             return func
