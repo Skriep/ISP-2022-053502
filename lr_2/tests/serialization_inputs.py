@@ -1,3 +1,20 @@
+"""Serialization Inputs.
+
+This module provides a number of test inputs to be used by PyTest.
+It primarily targets testing serializers implemented by myserializer module.
+
+Attributes:
+    test_basic (list): A list of test inputs, including
+    basic types such as int, float, complex, bool, dict, list, set, frozenset,
+    tuple, range, bytes, bytearray, str.
+
+    test_funcs_with_args (list): A list of tuples, where the first element is
+    a function, and the second one is a list of test argument tuples.
+"""
+from types import FunctionType
+from typing import List, Tuple
+
+
 _int_tests: list = [
     1, 2, 12, 13434, -134134, 0, 7
 ]
@@ -27,7 +44,7 @@ _bytes_tests: list = [
     bytearray(b'123'), bytearray((1, 2, 5, 3, 2, 6, 235, 12, 123))
 ]
 
-test_inputs: list = _int_tests + _bool_tests + _dict_tests + \
+test_basic: list = _int_tests + _bool_tests + _dict_tests + \
     _set_tests + _range_tests + _bytes_tests
 
 
@@ -59,7 +76,7 @@ def _get_test_funcs() -> list:
         b = 4
 
         def _t(arg, default=3):
-            '''docstring'''
+            """Test docstring."""
             a = 225
             return math.sin(arg * a * b + default)
         return _t
@@ -69,12 +86,11 @@ def _get_test_funcs() -> list:
         b = 7
 
         def _a(arg, default=7):
-            '''docstring'''
-            a = 225
+            a = 27
             return math.sin(arg * a * b + default)
 
         def _b(arg, default=3):
-            '''docstring'''
+            """Docstring."""
             a = 225
             if arg > 0:
                 return _a(arg * a * b + default)
@@ -98,4 +114,5 @@ def _get_test_funcs() -> list:
     ]
 
 
-test_funcs_with_args: list = _get_test_funcs()
+test_funcs_with_args: List[Tuple[FunctionType,
+                                 List[Tuple]]] = _get_test_funcs()

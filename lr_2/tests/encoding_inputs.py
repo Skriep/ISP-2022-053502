@@ -1,3 +1,15 @@
+"""Encoding Inputs.
+
+This module provides a number of test inputs to be used by PyTest.
+It primarily targets testing encoders and decoders that are compatible
+with myserializer.packer.Packer.
+
+Attributes:
+    test_inputs (list): A list of test inputs, including:
+    - test strings
+    - test dicts
+    - test lists
+"""
 
 _test_strings: list = [
     'abcdefg', 'with new\r\nlines', '\b\f\n\r\t \v\a', '',
