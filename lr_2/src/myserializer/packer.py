@@ -1,3 +1,13 @@
+"""Packer module.
+
+This module can pack (unpack) objects into (from) a dict
+containing only three types:
+- str;
+- list;
+- dict.
+
+If imported as module, the class Packer is available.
+"""
 import inspect
 import marshal
 from pydoc import locate
@@ -18,10 +28,52 @@ def _make_cell(contents):
 
 
 class Packer:
+    """The class provides methods for object packing.
+
+    It can pack different objects into a combination of three:
+    - dict;
+    - list;
+    - str.
+
+    Supported objects for packing:
+    - None
+    - int, float, complex
+    - bool
+    - str, bytes, bytearray
+    - dict, list, tuple
+    - set, frozenset
+    - range
+    - user-defined function
+
+    Provided methods:
+    - pack - pack python object into dict;
+    - unpack - unpack object from dict.
+
+    Note:
+        Objects serialized using Python of some version
+        must be deserialized using that specific version of Python.
+    """
+
     def __init__(self, globals: Dict[str, Any] = None) -> None:
+        """__init__ method.
+
+        Args:
+            globals (dict, optional): value for globals property.
+
+        Note:
+            globals value is used when functions are unpacked:
+            it replaces deserialized function's __globals__ attribute.
+
+            The dictionary globals must contain all the necessary global
+            variables required to execute the function.
+
+            If functions are not being unpacked, changing the value
+            of globals has no effect.
+        """
         self.globals = globals
 
     def pack(self, obj) -> 'Dict[str, str | List[Dict] | Dict]':
+        """Pack object into one dict."""
         data: 'Dict[str, str | List[Dict] | Dict]' = {}
         obj_type = type(obj)
         obj_type_str = re.findall("'(.+?)'", str(obj_type))[0]
@@ -64,6 +116,7 @@ class Packer:
         return data
 
     def unpack(self, data: 'Dict[str, str | List[Dict] | Dict]') -> Any:
+        """Pack object from one dict."""
         obj_type = str(data['type'])
         if obj_type == 'None':
             return None
