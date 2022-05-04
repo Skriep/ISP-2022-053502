@@ -25,7 +25,7 @@ def randomize_uppercase(lst: List[str]):
 @pytest.mark.parametrize('serializer_type',
                          implemented + randomize_uppercase(implemented))
 def test_implemented(serializer_type):
-    assert create_serializer(serializer_type) is Serializer
+    assert isinstance(create_serializer(serializer_type), Serializer)
 
 
 @pytest.mark.parametrize(
