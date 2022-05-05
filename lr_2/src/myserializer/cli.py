@@ -3,6 +3,7 @@ import argparse
 import sys
 import myserializer
 from myserializer.serializer import Serializer
+import shutil
 
 
 def _print_err(error):
@@ -39,12 +40,10 @@ def main(argv=None):
 
     if input_format == output_format:
         try:
-            with open(input_filename, 'r') as input_file, \
-                 open(output_filename, 'w') as output_file:
-                output_file.write(input_file.read())
+            shutil.copy(input_filename, output_filename)
             print('Success!')
         except Exception as e:
-            _print_err(f'Error: {e}')
+            _print_err(e)
         finally:
             return
 
@@ -59,7 +58,7 @@ def main(argv=None):
             output_serializer.dump(loaded, output_file)
         print('Success!')
     except Exception as e:
-        _print_err(f'Error: {e}')
+        _print_err(e)
         return
 
 
