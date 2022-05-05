@@ -70,8 +70,8 @@ def test_basic_serialization(test_input, serializer: Serializer,
 
 
 @pytest.mark.parametrize('test_input', [
-    '"just a string"', '["array", 1, 2]', '{"f" : "f"}',
-    '{"unterminated'
+    '"just a string"', '[ "array", 1, 2 ]', '{"f" : "f"}',
+    '{ "unterminated '
 ])
 @pytest.mark.parametrize('serializer', serializers)
 def test_not_unpackable(test_input, serializer: Serializer):
