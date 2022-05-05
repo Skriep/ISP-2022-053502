@@ -1,0 +1,9 @@
+pytest == 4.6.11
+pytest-cov == 3.0.0
+tox == 3.25.0
+flake8 == 4.0.1
+mypy == 0.950
+types-PyYAML == 6.0.7
+types-toml == 0.10.6
+pyyaml >= 5.3.1, <= 5.4.1
+toml == 0.10.2
