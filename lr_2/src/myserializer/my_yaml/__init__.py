@@ -5,10 +5,10 @@ string or TextIO in YAML format.
 
 If imported as module, the class YamlSerializer is available.
 """
-from typing import TextIO
-from myserializer.serializer import Serializer
-from typing import Any
+from typing import Any, TextIO
+
 import yaml
+from myserializer.serializer import Serializer
 
 
 class YamlSerializer(Serializer):

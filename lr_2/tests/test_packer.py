@@ -4,8 +4,9 @@ This module provides a number of tests to be used by PyTest.
 It targets testing myserializer.packer module:
 - Checking if object after being repacked does not change type and value.
 """
-from myserializer.packer import Packer
 import pytest
+from myserializer.packer import Packer
+
 from serialization_inputs import test_basic
 
 

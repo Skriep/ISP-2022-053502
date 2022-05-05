@@ -6,7 +6,6 @@ If imported as module, the class JsonEncoder is available.
 """
 from typing import Dict, List, Tuple, cast
 
-
 STR_ESCAPED_CHARS = {
     '\\': '\\\\',
     '"': '\\"',

@@ -7,13 +7,15 @@ for valid inputs;
 - Checking if create_serializer raises NotImplementedError for those
 formats that are not expected to be implemented.
 """
+import random
+from typing import List
+
+import pytest
 from myserializer import create_serializer
 from myserializer.serializer import Serializer
+
 from serialization_options import implemented_formats as implemented
 from serialization_options import not_implemented_formats as not_implemented
-import pytest
-from typing import List
-import random
 
 
 def randomize_uppercase(lst: List[str], seed: int = 0):

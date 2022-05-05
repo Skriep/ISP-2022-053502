@@ -6,8 +6,8 @@ string or TextIO in different serialization formats.
 If imported as module, the method create_serializer is available.
 """
 from myserializer.my_json import JsonSerializer
-from myserializer.my_yaml import YamlSerializer
 from myserializer.my_toml import TomlSerializer
+from myserializer.my_yaml import YamlSerializer
 from myserializer.serializer import Serializer
 
 

@@ -7,13 +7,15 @@ serialized and deserialized;
 - Checking if user-defined functions can be correctly
 serialized and deserialized.
 """
+import io
 from types import FunctionType
 from typing import List, Tuple
+
+import pytest
 from myserializer.serializer import Serializer
+
 from serialization_inputs import test_basic, test_funcs_with_args
 from serialization_options import serializers
-import pytest
-import io
 
 
 def dumps_loads(item, serializer: Serializer):

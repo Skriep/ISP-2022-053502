@@ -6,11 +6,13 @@ It targets testing myserializer.my_json module:
 - Checking if json output can be decoded by my_json;
 - Checking is my_json can work with custom separators.
 """
-from encoding_inputs import test_inputs
-from myserializer.my_json.encoder import JsonEncoder
-from myserializer.my_json.decoder import JsonDecoder
-import pytest
 import json
+
+import pytest
+from myserializer.my_json.decoder import JsonDecoder
+from myserializer.my_json.encoder import JsonEncoder
+
+from encoding_inputs import test_inputs
 
 
 def encode_loads(obj, encoder: JsonEncoder):

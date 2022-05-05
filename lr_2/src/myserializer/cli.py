@@ -1,9 +1,10 @@
 """Command line interface for myserializer."""
 import argparse
+import shutil
 import sys
+
 import myserializer
 from myserializer.serializer import Serializer
-import shutil
 
 
 def _print_err(error):

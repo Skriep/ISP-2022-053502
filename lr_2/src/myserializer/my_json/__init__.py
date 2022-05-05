@@ -5,10 +5,11 @@ string or TextIO in JSON format.
 
 If imported as module, the class JsonSerializer is available.
 """
-from typing import TextIO, Any, cast
-from myserializer.my_json.encoder import JsonEncoder
-from myserializer.my_json.decoder import JsonDecoder
 import io
+from typing import Any, TextIO, cast
+
+from myserializer.my_json.decoder import JsonDecoder
+from myserializer.my_json.encoder import JsonEncoder
 from myserializer.serializer import Serializer
 
 

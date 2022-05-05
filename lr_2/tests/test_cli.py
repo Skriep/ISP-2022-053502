@@ -1,8 +1,9 @@
 """This module privides myserializer.cli tests."""
-from myserializer import cli
+import os
+
 import myserializer
 import pytest
-import os
+from myserializer import cli
 
 
 def test_main_help(capsys):

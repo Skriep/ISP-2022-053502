@@ -4,9 +4,8 @@ This module can decode objects from JSON strings.
 
 If imported as module, the class JsonDecoder is available.
 """
-from typing import Dict, List, TextIO, Tuple, cast
 from io import StringIO
-
+from typing import Dict, List, TextIO, Tuple, cast
 
 WHITESPACE_CHARS = ' \n\r'
 

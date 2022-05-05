@@ -8,14 +8,14 @@ containing only three types:
 
 If imported as module, the class Packer is available.
 """
+import builtins
 import inspect
 import marshal
+import re
+from base64 import b64decode, b64encode
 from pydoc import locate
 from types import CellType, FunctionType
 from typing import Any, Callable, Dict, List, cast
-import re
-import builtins
-from base64 import b64encode, b64decode
 
 
 def _make_cell(contents):

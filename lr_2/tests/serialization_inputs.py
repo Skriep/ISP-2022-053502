@@ -13,8 +13,8 @@ Attributes:
 """
 from types import FunctionType
 from typing import List, Tuple
-import serialization_func_tests_dummy
 
+import serialization_func_tests_dummy
 
 _int_tests: list = [
     1, 2, 12, 13434, -134134, 0, 7

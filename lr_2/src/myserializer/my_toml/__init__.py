@@ -5,10 +5,10 @@ string or TextIO in TOML format.
 
 If imported as module, the class TomlSerializer is available.
 """
-from typing import TextIO
-from myserializer.serializer import Serializer
-from typing import Any
+from typing import Any, TextIO
+
 import toml
+from myserializer.serializer import Serializer
 
 
 class TomlSerializer(Serializer):
