@@ -145,10 +145,7 @@ class Packer:
         elif obj_type == 'module':
             name = self.unpack(cast(Dict, data['name']))
             name = cast(str, name)
-            if self.globals and name in self.globals:
-                return self.globals[name]
-            else:
-                return __import__(name, self.globals)
+            return __import__(name, self.globals)
         elif obj_type == 'function':
             globals = self.globals
             if globals is None:
